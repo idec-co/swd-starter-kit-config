@@ -205,7 +205,7 @@ def update_STO_parameters(status):
 
 def update_SLS_parameters(vl_limit, vl_time_monitoring):
     params, signature, error = safe_motion_client.getSLSParameters(SLSId.SLS_1)
-    check("getLSParameters(SLSId.SLS_1)", error)
+    check("getSLSParameters(SLSId.SLS_1)", error)
 
     params.velocity_limit_u32 = vl_limit
     params.time_to_velocity_monitoring = vl_time_monitoring
