@@ -95,10 +95,29 @@ def main(argv):
     vl_acc_delta_speed = 1500
     vl_dec_delta_speed = 1500
     restart_acknowledge_behavior = False
+
+    # SLS parameters
     sls_1_vl_limit = 680
     sls_1_vl_time_monitoring = 1000
-    sls_2_vl_limit = 850
+    sls_1_sto_error_reaction = False
+    sls_2_vl_limit = 680
     sls_2_vl_time_monitoring = 1000
+    sls_2_sto_error_reaction = False 
+
+    # SLSa parameters 
+    slsa_1_p_vl_limit = 680
+    slsa_1_n_vl_limit = 100
+    slsa_1_vl_time_monitoring = 1000
+    slsa_1_sto_error_reaction = False
+    slsa_2_p_vl_limit = 680
+    slsa_2_n_vl_limit = 100
+    slsa_2_vl_time_monitoring = 1000
+    slsa_2_sto_error_reaction = False
+    
+    # SMS parameters
+    sms_p_vl_limit = 1400
+    sms_n_vl_limit = 1400
+    sms_sto_error_reaction = False 
 
     # Create DBus clients
     commissioning.create_dbus_clients(instance_id)
@@ -152,8 +171,24 @@ def main(argv):
     #
     # Update SLS parameters
     #
-    commissioning.update_SLS_1_parameters(sls_1_vl_limit, sls_1_vl_time_monitoring)
-    commissioning.update_SLS_2_parameters(sls_2_vl_limit, sls_2_vl_time_monitoring)
+    commissioning.update_SLS_1_parameters(sls_1_vl_limit, sls_1_vl_time_monitoring, sls_1_sto_error_reaction)
+    # commissioning.update_SLS_2_parameters(sls_2_vl_limit, sls_2_vl_time_monitoring, sls_2_sto_error_reaction)
+
+    #
+    # Update SLSa parameters
+    #
+    # commissioning.update_SLSa_1_parameters(slsa_1_p_vl_limit, slsa_1_n_vl_limit, slsa_1_vl_time_monitoring, slsa_1_sto_error_reaction)
+    # commissioning.update_SLSa_2_parameters(slsa_2_p_vl_limit, slsa_2_n_vl_limit, slsa_2_vl_time_monitoring, slsa_2_sto_error_reaction)
+
+    #
+    # Update SMS parameters
+    #
+    # commissioning.update_SMS_parameters(sms_p_vl_limit, sms_n_vl_limit, sms_sto_error_reaction)
+
+    #
+    # Update error behavior
+    #
+    commissioning.update_motor_speed_PID()
 
     #
     # Update error behavior
