@@ -186,9 +186,14 @@ def main(argv):
     # commissioning.update_SMS_parameters(sms_p_vl_limit, sms_n_vl_limit, sms_sto_error_reaction)
 
     #
-    # Update error behavior
+    # Update PID parameters for motor speed
     #
     commissioning.update_motor_speed_PID()
+
+    #
+    # Update external brake parameters
+    #
+    commissioning.update_external_brake_parameters()
 
     #
     # Update error behavior
