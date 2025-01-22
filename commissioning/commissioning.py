@@ -277,7 +277,7 @@ def update_SMS_parameters(p_vl_limit, n_vl_limit, sto_error_reaction):
 
 
 def update_motor_speed_PID():
-    swd_params, error = commissioning.manufacturer_client.getSWDParameters()
+    swd_params, error = manufacturer_client.getSWDParameters()
     check("getSWDParameters()", error)
 
     swd_params.motctrl_speed_pid_p = 150
