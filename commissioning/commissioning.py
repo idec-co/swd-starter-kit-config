@@ -289,7 +289,7 @@ def update_motor_speed_PID():
 
 
 def update_external_brake_parameters():
-    error = can_open_client.setValueBool(0x2660, 0)
+    error = can_open_client.setValueBool(0x2660_00_01, 0)
     check("update_external_brake()", error)
 
 
