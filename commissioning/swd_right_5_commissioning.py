@@ -88,7 +88,6 @@ def update_SRDO_parameters():
 
 
 def main(argv):
-
     instance_id = "swd_right"
     node_id = 5
     polarity = False  # velocity demand value/motor revolution increments shall be multiplied by –1 if True
@@ -200,6 +199,11 @@ def main(argv):
     #
     commissioning.update_error_behavior()
 
+    #
+    # Update output sources
+    #
+    commissioning.update_output_sources(can_alim, can_io_alim)
+
     # Save modified parameters
     error = commissioning.communication_client.storeParameters(BlocId.ALL)
     commissioning.check("storeParameters", 1)  # error)
@@ -213,5 +217,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-
     main(sys.argv[1:])

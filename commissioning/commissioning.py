@@ -21,7 +21,7 @@ from smcdbusclient.srdo import SRDODBusClient, SRDOId
 
 from smcdbusclient.can_open import CANOpenDBusClient
 
-from smcdbusclient.manufacturer import ManufacturerDBusClient
+from smcdbusclient.manufacturer import ManufacturerDBusClient, OutputSource
 
 # global
 nmt_client = None
@@ -56,7 +56,6 @@ def list_to_swm(l: List[SafetyFunctionId]):
 
 
 def update_network_parameters(node_id: int):
-
     network = NetworkParameters()
 
     network.node_id = node_id
@@ -68,7 +67,6 @@ def update_network_parameters(node_id: int):
 
 
 def update_communication_parameters(node_id: int):
-
     params = PDOCommunicationParameters()
     mapping = PDOMappingParameters()
 
@@ -155,7 +153,6 @@ def update_communication_parameters(node_id: int):
 
 
 def update_polarity_parameters(polarity: bool):
-
     params = PolarityParameters()
     params.velocity_polarity = polarity
     params.position_polarity = polarity
@@ -165,7 +162,6 @@ def update_polarity_parameters(polarity: bool):
 
 
 def disable_SRDO_parameters():
-
     # Modify every SRDO
     for srdo in SRDOId:
         (
@@ -289,13 +285,21 @@ def update_motor_speed_PID():
 
 
 def update_external_brake_parameters():
-    error = can_open_client.setValueBool(0x2660_00_01, 0)
+    error = can_open_client.setValueBool(0x2660_00_01, 0) # 0: external brake is not connected 1: external brake is connected
     check("update_external_brake()", error)
 
 
 def update_error_behavior():
     error = can_open_client.setValueUInt8(0x1029_02_00, 1)  # error_behavior_syserr_for_error => 1 (no change of the NMT state)
     check("update_error_behavior()", error)
+
+
+def update_output_sources(can_alim, can_io_alim):
+    error = manufacturer_client.setOutputControl(OutputSource.CAN_ALIM, can_alim)
+    check(f"update_output_source(CAN_ALIM, {can_alim})", error)
+
+    error = manufacturer_client.setOutputControl(OutputSource.CAN_IO_ALIM, can_io_alim)
+    check("update_output_source(CAN_IO_ALIM, {can_io_alim})", error)
 
 
 # Init
