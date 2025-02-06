@@ -197,7 +197,7 @@ def main(argv):
     #
     # Update external brake parameters
     #
-    commissioning.update_external_brake_parameters()
+    # commissioning.update_external_brake_parameters()
 
     #
     # Update error behavior
