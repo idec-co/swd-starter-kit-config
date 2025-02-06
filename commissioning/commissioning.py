@@ -276,16 +276,16 @@ def update_motor_speed_PID():
     swd_params, error = manufacturer_client.getSWDParameters()
     check("getSWDParameters()", error)
 
-    swd_params.motctrl_speed_pid_p = 150
-    swd_params.motctrl_speed_pid_i = 400
-    swd_params.motctrl_speed_pid_d = 50
+    swd_params.motctrl_speed_pid_p = 90     # Default: 150
+    swd_params.motctrl_speed_pid_i = 700    # Default: 400
+    swd_params.motctrl_speed_pid_d = 10     # Default: 50
 
     error = manufacturer_client.setSWDParameters(swd_params)
     check("setSWDParameters()", error)
 
 
 def update_external_brake_parameters():
-    error = can_open_client.setValueBool(0x2660_00_01, 0) # 0: external brake is not connected 1: external brake is connected
+    error = can_open_client.setValueBool(0x2660_00_01, 0)   # 0: external brake is not connected 1: external brake is connected
     check("update_external_brake()", error)
 
 
