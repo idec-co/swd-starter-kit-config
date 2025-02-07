@@ -94,12 +94,14 @@ def main(argv):
     vl_acc_delta_speed = 1500
     vl_dec_delta_speed = 1500
     restart_acknowledge_behavior = False
+    can_alim = False
+    can_io_alim = True
 
     # SLS parameters
     sls_1_vl_limit = 680
     sls_1_vl_time_monitoring = 1000
     sls_1_sto_error_reaction = False
-    sls_2_vl_limit = 680
+    sls_2_vl_limit = 850
     sls_2_vl_time_monitoring = 1000
     sls_2_sto_error_reaction = False 
 
