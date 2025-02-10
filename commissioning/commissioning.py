@@ -11,7 +11,7 @@ from colorama import Fore, Style
 
 from smcdbusclient.communication import NetworkParameters, BitTiming, PDOCommunicationParameters, PDOTransmissionType, PDOId, CommunicationDBusClient, PDOMappingParameters
 from smcdbusclient.pds import PolarityParameters, PDSDBusClient
-from smcdbusclient.safe_motion import STOId, SLSId, SafetyFunctionId, SafetyWordMapping, SafeMotionDBusClient
+from smcdbusclient.safe_motion import STOId, SLSId, SLSaId, SMSId, SafetyFunctionId, SafetyWordMapping, SafeMotionDBusClient
 
 from smcdbusclient.nmt import NMTDBusClient
 
@@ -20,6 +20,8 @@ from smcdbusclient.velocity_mode import VelocityModeDBusClient
 from smcdbusclient.srdo import SRDODBusClient, SRDOId
 
 from smcdbusclient.can_open import CANOpenDBusClient
+
+from smcdbusclient.manufacturer import ManufacturerDBusClient, OutputSource
 
 # global
 nmt_client = None
@@ -54,7 +56,6 @@ def list_to_swm(l: List[SafetyFunctionId]):
 
 
 def update_network_parameters(node_id: int):
-
     network = NetworkParameters()
 
     network.node_id = node_id
@@ -66,7 +67,6 @@ def update_network_parameters(node_id: int):
 
 
 def update_communication_parameters(node_id: int):
-
     params = PDOCommunicationParameters()
     mapping = PDOMappingParameters()
 
@@ -122,6 +122,7 @@ def update_communication_parameters(node_id: int):
 
     # Set the COB ID of the RPDO_4
     params.cob_id.can_id = 0x500 + node_id  # 0x500 + $NODE_ID
+    params.event_timer = 250
     error = communication_client.setRPDOCommunicationParameters(PDOId.PDO_4, params)
     check("setRPDOCommunicationParameters(PDOId.PDO_4)", error)
 
@@ -152,7 +153,6 @@ def update_communication_parameters(node_id: int):
 
 
 def update_polarity_parameters(polarity: bool):
-
     params = PolarityParameters()
     params.velocity_polarity = polarity
     params.position_polarity = polarity
@@ -162,7 +162,6 @@ def update_polarity_parameters(polarity: bool):
 
 
 def disable_SRDO_parameters():
-
     # Modify every SRDO
     for srdo in SRDOId:
         (
@@ -203,33 +202,104 @@ def update_STO_parameters(status):
     check("setSTOParameters(STOId.STO_1)", error)
 
 
-def update_SLS_1_parameters(vl_limit, vl_time_monitoring):
+def update_SLS_1_parameters(vl_limit, vl_time_monitoring, sto_error_reaction):
     params, signature, error = safe_motion_client.getSLSParameters(SLSId.SLS_1)
     check("getSLSParameters(SLSId.SLS_1)", error)
 
     params.velocity_limit_u32 = vl_limit
     params.time_to_velocity_monitoring = vl_time_monitoring
     params.time_for_velocity_in_limits = vl_time_monitoring
+    params.sto_error_reaction = sto_error_reaction
 
     error = safe_motion_client.setSLSParameters(SLSId.SLS_1, params)
     check("setSLSParameters(SLSId.SLS_1)", error)
 
 
-def update_SLS_2_parameters(vl_limit, vl_time_monitoring):
+def update_SLS_2_parameters(vl_limit, vl_time_monitoring, sto_error_reaction):
     params, signature, error = safe_motion_client.getSLSParameters(SLSId.SLS_2)
     check("getSLSParameters(SLSId.SLS_2)", error)
 
     params.velocity_limit_u32 = vl_limit
     params.time_to_velocity_monitoring = vl_time_monitoring
     params.time_for_velocity_in_limits = vl_time_monitoring
+    params.sto_error_reaction = sto_error_reaction
 
     error = safe_motion_client.setSLSParameters(SLSId.SLS_2, params)
     check("setSLSParameters(SLSId.SLS_2)", error)
 
 
+def update_SLSa_1_parameters(p_vl_limit, n_vl_limit, vl_time_monitoring, sto_error_reaction):
+    params, signature, error = safe_motion_client.getSLSaParameters(SLSaId.SLSa_1)
+    check("getSLSaParameters(SLSaId.SLSa_1)", error)
+
+    params.positive_velocity_limit_u32 = p_vl_limit
+    params.time_to_positive_velocity_monitoring = vl_time_monitoring
+    params.time_for_positive_velocity_in_limits = vl_time_monitoring
+    params.negative_velocity_limit_u32 = n_vl_limit
+    params.time_to_negative_velocity_monitoring = vl_time_monitoring
+    params.time_for_negative_velocity_in_limits = vl_time_monitoring
+    params.sto_error_reaction = sto_error_reaction
+
+    error = safe_motion_client.setSLSaParameters(SLSaId.SLSa_1, params)
+    check("setSLSaParameters(SLSaId.SLSa_1)", error)
+
+
+def update_SLSa_2_parameters(p_vl_limit, n_vl_limit, vl_time_monitoring, sto_error_reaction):
+    params, signature, error = safe_motion_client.getSLSaParameters(SLSaId.SLSa_2)
+    check("getSLSaParameters(SLSaId.SLSa_2)", error)
+
+    params.positive_velocity_limit_u32 = p_vl_limit
+    params.time_to_positive_velocity_monitoring = vl_time_monitoring
+    params.time_for_positive_velocity_in_limits = vl_time_monitoring
+    params.negative_velocity_limit_u32 = n_vl_limit
+    params.time_to_negative_velocity_monitoring = vl_time_monitoring
+    params.time_for_negative_velocity_in_limits = vl_time_monitoring
+    params.sto_error_reaction = sto_error_reaction
+
+    error = safe_motion_client.setSLSaParameters(SLSaId.SLSa_2, params)
+    check("setSLSaParameters(SLSaId.SLSa_2)", error)
+
+
+def update_SMS_parameters(p_vl_limit, n_vl_limit, sto_error_reaction):
+    params, signature, error = safe_motion_client.getSMSParameters(SMSId.SMS_1)
+    check("getSMSParameters(SMSId.SMS_1)", error)
+
+    params.velocity_maximum_positive_u32 = p_vl_limit
+    params.velocity_maximum_negative_u32 = n_vl_limit
+    params.sto_error_reaction = sto_error_reaction
+
+    error = safe_motion_client.setSMSParameters(SMSId.SMS_1, params)
+    check("setSMSParameters(SMSId.SMS_1)", error)
+
+
+def update_motor_speed_PID():
+    swd_params, error = manufacturer_client.getSWDParameters()
+    check("getSWDParameters()", error)
+
+    swd_params.motctrl_speed_pid_p = 90     # Default: 150
+    swd_params.motctrl_speed_pid_i = 700    # Default: 400
+    swd_params.motctrl_speed_pid_d = 10     # Default: 50
+
+    error = manufacturer_client.setSWDParameters(swd_params)
+    check("setSWDParameters()", error)
+
+
+def update_external_brake_parameters():
+    error = can_open_client.setValueBool(0x2660_00_01, 0)   # 0: external brake is not connected 1: external brake is connected
+    check("update_external_brake()", error)
+
+
 def update_error_behavior():
     error = can_open_client.setValueUInt8(0x1029_02_00, 1)  # error_behavior_syserr_for_error => 1 (no change of the NMT state)
     check("update_error_behavior()", error)
+
+
+def update_output_sources(can_alim, can_io_alim):
+    error = manufacturer_client.setOutputControl(OutputSource.CAN_ALIM, can_alim)
+    check(f"update_output_source(CAN_ALIM, {can_alim})", error)
+
+    error = manufacturer_client.setOutputControl(OutputSource.CAN_IO_ALIM, can_io_alim)
+    check("update_output_source(CAN_IO_ALIM, {can_io_alim})", error)
 
 
 # Init
@@ -244,6 +314,7 @@ def create_dbus_clients(instance_id: str):
     global srdo_client
     global communication_client
     global can_open_client
+    global manufacturer_client
 
     # Load specific dbus user session if exists
     if os.path.isfile("/tmp/SYSTEMCTL_dbus.id"):
@@ -260,5 +331,6 @@ def create_dbus_clients(instance_id: str):
     srdo_client = SRDODBusClient(instance_id)
     communication_client = CommunicationDBusClient(instance_id)
     can_open_client = CANOpenDBusClient(instance_id)
+    manufacturer_client = ManufacturerDBusClient(instance_id)
 
     check(f"create_dbus_clients({instance_id})", 1)
