@@ -193,11 +193,6 @@ def main(argv):
     commissioning.update_motor_speed_PID()
 
     #
-    # Update external brake parameters
-    #
-    # commissioning.update_external_brake_parameters()
-
-    #
     # Update error behavior
     #
     commissioning.update_error_behavior()
