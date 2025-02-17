@@ -284,11 +284,6 @@ def update_motor_speed_PID():
     check("setSWDParameters()", error)
 
 
-def update_external_brake_parameters():
-    error = can_open_client.setValueBool(0x2660_00_01, 0)   # 0: external brake is not connected 1: external brake is connected
-    check("update_external_brake()", error)
-
-
 def update_error_behavior():
     error = can_open_client.setValueUInt8(0x1029_02_00, 1)  # error_behavior_syserr_for_error => 1 (no change of the NMT state)
     check("update_error_behavior()", error)
