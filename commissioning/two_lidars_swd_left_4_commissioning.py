@@ -196,7 +196,6 @@ def main(argv):
     #
     commissioning.update_motor_speed_PID()
 
-
     #
     # Update error behavior
     #
