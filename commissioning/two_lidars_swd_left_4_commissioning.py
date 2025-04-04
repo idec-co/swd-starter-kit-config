@@ -39,6 +39,7 @@ def update_SRDO_parameters():
         SafetyFunctionId.NONE,
         SafetyFunctionId.NONE,
     ]
+
     scwMapping[0] = SafetyFunctionId.STO
     scwMapping[1] = SafetyFunctionId.STO
     scwMapping[2] = SafetyFunctionId.SDIP_1
@@ -92,7 +93,6 @@ def update_SRDO_parameters():
 
 
 def main(argv):
-
     instance_id = "swd_left"
     node_id = 0x4
     polarity = True  # velocity demand value/motor revolution increments shall be multiplied by –1 if True
