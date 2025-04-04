@@ -50,7 +50,7 @@ def update_SRDO_parameters():
     commissioning.safe_motion_client.setSafetyControlWordMapping(scw, commissioning.list_to_swm(scwMapping))
     commissioning.check("setSafetyControlWordMapping()", error)
 
-    # SRDO 16
+    # SRDO_16
     # communication parameters (TX)
     srdoParam = SRDOParameters()
     srdoParam.can_id1 = 0x109
@@ -71,6 +71,7 @@ def update_SRDO_parameters():
         SafetyFunctionId.NONE,
         SafetyFunctionId.NONE,
     ]
+
     scwMapping[0] = SafetyFunctionId.STO
     scwMapping[1] = SafetyFunctionId.STO
     scwMapping[2] = SafetyFunctionId.SDIN_1
@@ -105,9 +106,9 @@ def main(argv):
     sls_1_vl_limit = 680
     sls_1_vl_time_monitoring = 1000
     sls_1_sto_error_reaction = False
-    sls_2_vl_limit = 680
+    sls_2_vl_limit = 850
     sls_2_vl_time_monitoring = 1000
-    sls_2_sto_error_reaction = False 
+    sls_2_sto_error_reaction = False
 
     # SLSa parameters 
     slsa_1_p_vl_limit = 680
@@ -118,7 +119,7 @@ def main(argv):
     slsa_2_n_vl_limit = 100
     slsa_2_vl_time_monitoring = 1000
     slsa_2_sto_error_reaction = False
-    
+
     # SMS parameters
     sms_p_vl_limit = 1400
     sms_n_vl_limit = 1400
