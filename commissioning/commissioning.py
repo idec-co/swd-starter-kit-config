@@ -59,8 +59,10 @@ def update_network_parameters(node_id: int):
     network = NetworkParameters()
 
     network.node_id = node_id
-    network.bit_timing = BitTiming.BT_1000
     network.rt_activated = True
+
+    error = can_open_client.setValueInt8(0x2100_00_08, BitTiming.BT_1000)
+    check(f"setNetworkParameters(bit_timing)", error)
 
     error = communication_client.setNetworkParameters(network)
     check(f"setNetworkParameters(node_id={node_id})", error)
