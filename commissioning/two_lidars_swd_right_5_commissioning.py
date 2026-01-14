@@ -105,25 +105,25 @@ def main(argv):
     # SLS parameters
     sls_1_vl_limit = 680
     sls_1_vl_time_monitoring = 1000
-    sls_1_sto_error_reaction = False
+    sls_1_sto_error_reaction = True
     sls_2_vl_limit = 850
     sls_2_vl_time_monitoring = 1000
-    sls_2_sto_error_reaction = False
+    sls_2_sto_error_reaction = True
 
     # SLSa parameters 
     slsa_1_p_vl_limit = 680
     slsa_1_n_vl_limit = 100
     slsa_1_vl_time_monitoring = 1000
-    slsa_1_sto_error_reaction = False
+    slsa_1_sto_error_reaction = True
     slsa_2_p_vl_limit = 680
     slsa_2_n_vl_limit = 100
     slsa_2_vl_time_monitoring = 1000
-    slsa_2_sto_error_reaction = False
+    slsa_2_sto_error_reaction = True
 
     # SMS parameters
     sms_p_vl_limit = 1400
     sms_n_vl_limit = 1400
-    sms_sto_error_reaction = False 
+    sms_sto_error_reaction = True
 
     # Create DBus clients
     commissioning.create_dbus_clients(instance_id)

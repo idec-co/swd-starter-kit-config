@@ -59,8 +59,10 @@ def update_network_parameters(node_id: int):
     network = NetworkParameters()
 
     network.node_id = node_id
-    network.bit_timing = BitTiming.BT_1000
     network.rt_activated = True
+
+    error = can_open_client.setValueInt8(0x2100_00_08, BitTiming.BT_1000)
+    check(f"setNetworkParameters(bit_timing)", error)
 
     error = communication_client.setNetworkParameters(network)
     check(f"setNetworkParameters(node_id={node_id})", error)
@@ -285,7 +287,8 @@ def update_motor_speed_PID():
 
 
 def update_error_behavior():
-    error = can_open_client.setValueUInt8(0x1029_02_00, 1)  # error_behavior_syserr_for_error => 1 (no change of the NMT state)
+	# error_behavior_syserr_for_error => 0 (the node enters the NMT 'pre-Operational' state)
+    error = can_open_client.setValueUInt8(0x1029_02_00, 0)
     check("update_error_behavior()", error)
 
 
